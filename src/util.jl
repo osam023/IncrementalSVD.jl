@@ -123,7 +123,7 @@ end
 # Return all of the ratings in the training set for a given user as (item, rating) tuples.
 function user_ratings(rating_set::RatingSet, user)
     user_id = rating_set.user_to_index[user]
-    id_to_item = [id => item for (item, id) in rating_set.item_to_index]
+    id_to_item = Dict(id => item for (item, id) in rating_set.item_to_index)
     extract_rating = rating -> (id_to_item[rating.item], rating.value)
     is_user = rating -> rating.user == user_id
     map(extract_rating, sort(filter(is_user, rating_set.training_set), by=r -> -r.value))
